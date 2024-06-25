@@ -326,6 +326,7 @@ Recommendations
 **Given the importance of these features, here are some strategic recommendations:**
 
 - Focus on Increasing Revenue Per Unit:
+  
 
 Implement pricing strategies to maximize revenue per unit sold.
 Consider upselling and cross-selling tactics to increase the average revenue per sale.
@@ -347,3 +348,132 @@ Although customer age is not a major factor, understanding the demographics of h
 
 Use insights from profit margin and unit price to segment customers and target them with personalized offers.
 
+
+# Saving the Model for Deployment
+
+This part of the code is for saving the trained Random Forest model to a file. This file can later be loaded for making predictions without having to retrain the model.
+
+import joblib
+
+## Save the best performing model (Random Forest) for deployment
+
+```python
+joblib.dump(rf_model, 'market_expansion_model.pkl')
+```
+
+## Loading the Model for Predictions
+This part of the code demonstrates how to load the saved model and use it to make predictions. This is what you would do in a production environment where you need to make predictions on new data.
+
+```python
+rf_model = joblib.load('market_expansion_model.pkl')
+```
+
+
+## Make predictions on the test set
+
+```python
+y_pred = rf_model.predict(X_test)
+```
+
+## Evaluate the predictions
+
+```python
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+```
+
+```python
+print(f'Mean Absolute Error (MAE): {mae}')
+print(f'Mean Squared Error (MSE): {mse}')
+print(f'R-squared (R2): {r2}')
+```
+![image](https://github.com/Hagar-zakaria/Predictive-Analytics-for-Marketing-Expansion-Sales-Forecasting-and-Customer-Segmentation/assets/93611934/ade8df3f-7d31-4fb9-91fa-5e6dad6e664e)
+
+## Plot actual vs. predicted values
+
+```python
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, y_pred, alpha=0.7, edgecolors='k')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], '--r', linewidth=2)
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.title('Actual vs. Predicted Values')
+plt.show()
+```
+
+![image](https://github.com/Hagar-zakaria/Predictive-Analytics-for-Marketing-Expansion-Sales-Forecasting-and-Customer-Segmentation/assets/93611934/4dee355b-6eec-4284-b691-ee4a7b51e894)
+
+
+# Implment the prediction on New Data we Can choose and write down
+
+## Example new data for prediction
+new_data = pd.DataFrame({
+    'Customer_Age': [35, 45, 50],
+    'Order_Quantity': [10, 20, 30],
+    'Unit_Cost': [50, 40, 60],
+    'Unit_Price': [120, 150, 200],
+    'Profit_Margin': [0.2, 0.3, 0.25],
+    'Revenue_Per_Unit': [150, 180, 210],
+    'Cost_Per_Unit': [40, 35, 45]
+})
+
+
+## Predict the profit for the new data
+predicted_profit = rf_model.predict(new_data)
+new_data['Predicted_Profit'] = predicted_profit
+
+print(new_data)
+
+![image](https://github.com/Hagar-zakaria/Predictive-Analytics-for-Marketing-Expansion-Sales-Forecasting-and-Customer-Segmentation/assets/93611934/cedb4537-319d-4dd3-803a-9c5d350ac699)
+
+
+# Given the prediction output, we can derive several actionable insights for marketing purposes:
+
+1. Customer Demographics and Targeting
+Insight: Understanding the age groups that are generating the most profit.
+
+Action: Tailor marketing campaigns to target age groups with higher profitability, such as age groups 45 and 50 in this example. Create personalized advertisements, promotions, and content that resonate with these demographics.
+2. Order Quantity Analysis
+Insight: Higher order quantities correlate with higher predicted profits.
+
+Action: Encourage bulk purchases by offering discounts or incentives for larger orders. Implement marketing strategies like "Buy More, Save More" campaigns to increase order quantities.
+3. Product Pricing and Cost Management
+Insight: Analyzing the relationship between unit cost, unit price, and profit margins.
+
+Action: Adjust pricing strategies to optimize profit margins. For example, if higher unit prices yield higher profit margins, consider repositioning the product as a premium offering. Alternatively, find ways to reduce unit costs without compromising quality to enhance profit margins.
+4. Revenue Per Unit
+Insight: Revenue per unit varies across different orders.
+
+Action: Focus marketing efforts on promoting products or bundles that offer higher revenue per unit. Highlight the value proposition of these high-revenue products in marketing materials.
+5. Predicted Profit Maximization
+Insight: Predicted profit values indicate potential high-gain customers or orders.
+
+Action: Prioritize marketing resources on customers or orders predicted to yield the highest profit. Implement loyalty programs or exclusive deals for these high-value customers to retain their business.
+Example Marketing Strategies
+1. Targeted Email Campaigns
+Target Group: Customers aged 45 and 50.
+Content: Personalized product recommendations, exclusive discounts, and loyalty rewards.
+Goal: Increase order quantities and repeat purchases.
+2. Bulk Purchase Incentives
+Strategy: Offer tiered discounts based on order quantity (e.g., 10% off for orders over 10 units, 15% off for orders over 20 units).
+Goal: Encourage larger purchases to boost overall sales volume and profitability.
+3. Premium Product Positioning
+Strategy: Rebrand and market products with high unit prices and profit margins as premium options.
+Content: High-quality visuals, testimonials, and highlighting unique product features.
+Goal: Justify higher prices and attract customers willing to pay a premium.
+4. Revenue Optimization
+Focus: Promote products with the highest revenue per unit.
+
+**Action**: Create special campaigns, bundle offers, and highlight these products on the website and in promotional materials.
+
+**Goal**: Maximize revenue from each sale.
+Implementing the Strategies
+
+**Data-Driven Decision Making**: Use the predicted profit data to inform which customer segments to target and what products to promote.
+
+**Marketing Campaigns**: Design and execute campaigns based on the insights derived from the predictive model output.
+
+**Monitoring and Adjustment**: Continuously monitor the performance of these campaigns and adjust strategies based on real-time data and feedback.
+
+By leveraging the predictive model outputs effectively, marketing teams can make informed decisions that enhance customer targeting, optimize pricing strategies, and ultimately drive higher profitability.
