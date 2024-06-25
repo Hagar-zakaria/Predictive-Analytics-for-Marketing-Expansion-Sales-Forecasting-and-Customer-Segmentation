@@ -60,10 +60,26 @@ data.isnull().sum()
 
 
 ## Drop rows with missing values (if any)
+
+```python
 data.dropna(inplace=True)
+```
 
 ## Convert categorical variables to numerical
-data = pd.get_dummies(data, drop_first=True)
 
+```python
+data = pd.get_dummies(data, drop_first=True)
+```
 # Data Transformation
+
 Convert categorical variables into numerical ones for machine learning models.
+
+```python
+data = pd.get_dummies(data, drop_first=True)
+```
+
+## Replace infinite values with NaN
+
+```python
+data.replace([np.inf, -np.inf], np.nan, inplace=True)
+```
